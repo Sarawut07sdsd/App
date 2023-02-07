@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/admin1/drawer_manager.dart';
-
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/admin1/hello.dart';
 import 'package:flutter_application_1/admin1/counter.dart';
 import 'package:flutter_application_1/admin1/the_mac.dart';
+import 'package:flutter_application_1/admin1/maps.dart';
+import 'package:flutter_application_1/admin1/maps1.dart';
+
 
 void main() {
   runApp(const MyApp2());
@@ -35,21 +38,19 @@ class _MyHomePageState extends State<MyHomePage> {
   String _getTitle(int index) {
     switch (index) {
       case 0:
-        return 'หน้าแรก';
+        return 'ลงเวลาเข้างาน & ออกงาน';
       case 1:
-        return 'ลงเวลาเข้างาน';
-      case 2:
         return 'ลางาน';
-      case 3:
+      case 2:
         return 'สิทธิ์การลางาน';
-      case 4:
+      case 3:
         return 'สิทธิ์เข้างาน';
-      case 5:
+      case 4:
         return 'ตำแหน่งบริษัท';
-      case 6:
+      case 5:
         return 'ออกจากระบบ';
       default:
-        return '';
+        return 'ออกจากระบบ';
     }
   }
 
@@ -62,13 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     const drawerSelections = [
-      HelloPage(),
+      DailyPage(),
       CounterPage(),
-      TheMACPage(),
-      TheMACPage(),
-      TheMACPage(),
-      TheMACPage(),
-      TheMACPage(),
+      CounterPage(),
+      CounterPage(),
+      CounterPage(),
+      CounterPage(),
+      MyApp(),
     ];
 
     final manager = Provider.of<DrawerManagerProvider>(context, listen: false);
@@ -96,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text(_getTitle(0)),
               onTap: () async {
                 // RUN A BACKEND Hello, Flutter OPERATION
+        
               },
             ),
             DrawerTile(
@@ -130,14 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // RUN A BACKEND Counter OPERATION
               },
             ),
-            DrawerTile(
-              context: context,
-              leading: const Icon(Icons.calculate),
-              title: Text(_getTitle(5)),
-              onTap: () async {
-                // RUN A BACKEND Counter OPERATION
-              },
-            ),
+           
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Divider(),
@@ -147,7 +142,9 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.plus_one),
               title: Text(_getTitle(6)),
               onTap: () async {
-                // RUN A BACKEND Signup OPERATION
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyApp();
+                }));
               },
             ),
           ],

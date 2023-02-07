@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class HelloPage extends StatelessWidget {
+class DailyPage1 extends StatelessWidget {
   
-  const HelloPage({Key? key}) : super(key: key);
+  const DailyPage1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
