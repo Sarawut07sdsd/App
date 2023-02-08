@@ -30,13 +30,18 @@ class _DailyPageState extends State<DailyPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String datetime2 = "";
-
+  String datetime0 = "";
   @override
+
+
   void setState(VoidCallback fn) {
     if (!mounted) return;
     super.setState(fn);
   }
 
+ 
+
+      
   @override
   void initState() {
     Timer mytimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -50,61 +55,94 @@ class _DailyPageState extends State<DailyPage> {
     super.initState();
   }
 
-  bool _isShown = true;
+  ///////// Dialg ///////////////////////////////////////////////////
 
-  void _YesNo(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext ctx) {
-          return AlertDialog(
-            title: const Text('ยืนยันการบันทึกเวลาเข้างานของคุณ'),
-            content: const Text('เวลาที่คุณบันทึกเวลาเข้า'),
-            actions: [
-              // The "Yes" button
-              TextButton(
-                  onPressed: () {
-                    // Remove the box
-                    setState(() {
-                      _isShown = false;
-                    });
-
-                    // Close the dialog
-                    //Navigator.of(context).pop();
-                  },
-                  child: const Text('ยืนยันบันทึกเวลาเข้าทำงาน')),
-            ],
-          );
-        });
+  Future<void> _showAlertGoToWork() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // <-- SEE HERE
+          title: const Text('ยืนยันการบันทึกเวลาเข้างานของคุณ'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text(
+                  'เวลาที่คุณบันทึกเวลาเข้าจะตรงกับเวลาปัจจุบัน !!',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ยืนยีน'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            const WebViewContainer('')));
+              },
+            ),
+            TextButton(
+              child: const Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  void _LAYesNo(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext ctx) {
-          return AlertDialog(
-            title: const Text('ยืนยันการบันทึกเวลาออกงานของคุณ'),
-            content: const Text('เวลาที่คุณบันทึกเวลาออกงาน'),
-            actions: [
-              // The "Yes" button
-              TextButton(
-                  onPressed: () {
-                    // Remove the box
-                    setState(() {
-                      _isShown = false;
-                    });
-
-                    // Close the dialog
-                    //Navigator.of(context).pop();
-                  },
-                  child: const Text('ยืนยันบันทึกเวลาออกทำงาน')),
-            ],
-          );
-        });
+  Future<void> _showAlertWorkOut() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // <-- SEE HERE
+          title: const Text('ยืนยันการบันทึกเวลาออกงานของคุณ'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text(
+                  'เวลาที่คุณบันทึกเวลาออกงานจะตรงกับเวลาปัจจุบัน !!',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ยืนยีน'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const WorkOut('')));
+              },
+            ),
+            TextButton(
+              child: const Text('ยกเลิก'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return SafeArea(
         child: SingleChildScrollView(
       child: Column(
@@ -325,7 +363,7 @@ class _DailyPageState extends State<DailyPage> {
                                       child: const Text('ลงเวลาเข้างาน',
                                           style:
                                               TextStyle(color: Colors.white)),
-                                      onPressed: () => _YesNo(context)),
+                                      onPressed: _showAlertGoToWork),
                                 ),
                               ),
                             ],
@@ -380,7 +418,7 @@ class _DailyPageState extends State<DailyPage> {
                                       child: const Text('ลงเวลาออกงาน',
                                           style:
                                               TextStyle(color: Colors.white)),
-                                      onPressed: () => _YesNo(context)),
+                                      onPressed: _showAlertWorkOut),
                                 ),
                               ),
                             ],
@@ -598,5 +636,60 @@ class _DailyPageState extends State<DailyPage> {
         ],
       ),
     ));
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// เข้างาน
+class WebViewContainer extends StatelessWidget {
+  final String webViewUrl;
+
+  const WebViewContainer(this.webViewUrl, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return const Center(
+      child: Text('บันทึกเวลาเข้างานสำเร็จ !!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Color.fromARGB(255, 0, 180, 45),
+              fontSize: 48,
+              fontWeight: FontWeight.bold)),
+    );
+  }
+}
+
+// ออกงาน
+class WorkOut extends StatelessWidget {
+  final String webViewUrl;
+
+  const WorkOut(this.webViewUrl, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return const Center(
+      child: Text('บันทึกเวลาออกงานสำเร็จ !!' +'' ,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Color.fromARGB(255, 0, 180, 45),
+              fontSize: 48,
+              fontWeight: FontWeight.bold)),
+    );
   }
 }

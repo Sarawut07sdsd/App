@@ -8,6 +8,8 @@ import 'package:flutter_application_1/admin1/the_mac.dart';
 import 'package:flutter_application_1/admin1/maps.dart';
 import 'package:flutter_application_1/admin1/maps1.dart';
 
+import 'package:flutter/cupertino.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() {
   runApp(const MyApp2());
@@ -42,9 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         return 'ลางาน';
       case 2:
-        return 'สิทธิ์การลางาน';
+        return 'ประวัติการเข้าทำงาน';
       case 3:
-        return 'สิทธิ์เข้างาน';
+        return 'ประวัติลางาน';
       case 4:
         return 'ตำแหน่งบริษัท';
       case 5:
@@ -64,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     const drawerSelections = [
       DailyPage(),
-      CounterPage(),
+      TransectionPage(),
       CounterPage(),
       CounterPage(),
       CounterPage(),

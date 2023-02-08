@@ -42,7 +42,48 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-String _name = '';
+  String _name = '';
+
+///////////////////
+  ///
+  ///
+  ///
+  @override
+  Future<void> _showAlertGoToWork() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // <-- SEE HERE
+          title: const Text('เข้าสู่ระบบไม่สำเร็จ ERROR !!'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text(
+                  'เวลาที่คุณบันทึกเวลาเข้าจะตรงกับเวลาปัจจุบัน !!',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ตกลง'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const MyApp2();
+                }));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+//////////////////////////////////////
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,7 +126,6 @@ String _name = '';
                   border: OutlineInputBorder(),
                   labelText: 'รหัสผ่าน',
                 ),
-              
               ),
             ),
             Container(
@@ -101,13 +141,44 @@ String _name = '';
                         as Map<String, dynamic>;
                     var userId = jsonResponse['userId'];
                     if (userId == 1) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const MyApp2();
-                      }));
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('เข้าสู่ระบบสำเร็จ',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 180, 45),
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.bold)),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const MyApp2();
+                              })),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('เข้าสู่ระบบไม่สำเร็จ ERROR !!',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 233, 1, 1),
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.bold)),
+                          content: const Text('กรุณาตรวจสอบ ข้อมูลให้ถูกต้อง'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'OK'),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     }
-
-                    
                   },
                 )),
           ],
