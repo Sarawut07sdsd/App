@@ -31,18 +31,13 @@ class _DailyPageState extends State<DailyPage> {
   TextEditingController passwordController = TextEditingController();
   String datetime2 = "";
   String datetime0 = "";
-   String datetime3 = "";
+  String datetime3 = "";
   @override
-
-
   void setState(VoidCallback fn) {
     if (!mounted) return;
     super.setState(fn);
   }
 
- 
-
-      
   @override
   void initState() {
     Timer mytimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -685,7 +680,7 @@ class WorkOut extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return const Center(
-      child: Text('บันทึกเวลาออกงานสำเร็จ !!' +'' ,
+      child: Text('บันทึกเวลาออกงานสำเร็จ !!' + '',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Color.fromARGB(255, 0, 180, 45),
