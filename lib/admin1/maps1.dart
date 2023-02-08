@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+
+
 
 const Color primary = Color(0xfff2f9fe);
 const Color secondary = Color(0xFFdbe4f3);
@@ -24,6 +30,18 @@ class TransectionPage extends StatefulWidget {
 }
 
 class _TransectionPageState extends State<TransectionPage> {
+
+  
+  String dropdownvalue = 'ลาป่วย';
+  // List of items in our dropdown menu
+  var items = [
+    'ลาป่วย',
+    'ลาเป็นไข้',
+    'ลาแล้ว',
+    'ลาเลย',
+    'ลานะ',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +56,14 @@ class _TransectionPageState extends State<TransectionPage> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
-    TextEditingController x1 = TextEditingController();
+    TextEditingController DateText = TextEditingController();
     TextEditingController Date1 = TextEditingController();
     TextEditingController Date2 = TextEditingController();
+
+    String datetime2 = "";
+
+    DateTime datetime = DateTime.now();
+    datetime2 = DateFormat.yMMMEd().format(datetime);
     return SafeArea(
         child: SingleChildScrollView(
       child: Column(
@@ -88,7 +111,7 @@ class _TransectionPageState extends State<TransectionPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("วันนี้วันที่ :",
+                Text("วันนี้วันที่ :" + datetime2,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -197,7 +220,74 @@ class _TransectionPageState extends State<TransectionPage> {
           ),
 
           Row(
-            
+            children: [
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: 10,
+                    left: 25,
+                    right: 25,
+                  ),
+                  decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: grey.withOpacity(0.03),
+                          spreadRadius: 10,
+                          blurRadius: 3,
+                          // changes position of shadow
+                        ),
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 20, left: 20),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          // decoration: BoxDecoration(
+                          //   color: arrowbgColor,
+                          //   borderRadius: BorderRadius.circular(15),
+                          //   // shape: BoxShape.circle
+                          // ),
+                          child: Center(
+                              child: Icon(
+                            Icons.payment,
+                            color: mainFontColor,
+                          )),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: DropdownButton(
+                            value: dropdownvalue,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownvalue = newValue.toString();
+                                print(dropdownvalue);
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          Row(
             children: [
               Expanded(
                 child: Container(
@@ -243,10 +333,10 @@ class _TransectionPageState extends State<TransectionPage> {
                           child: Container(
                             padding: const EdgeInsets.all(20),
                             child: TextField(
-                              controller: x1,
+                              controller: DateText,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: 'ประเภทการลา',
+                                labelText: 'เหตุผลการลา',
                               ),
                             ),
                           ),
