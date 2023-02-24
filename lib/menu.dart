@@ -7,7 +7,8 @@ import 'package:flutter_application_1/admin1/counter.dart';
 import 'package:flutter_application_1/admin1/the_mac.dart';
 import 'package:flutter_application_1/admin1/maps.dart';
 import 'package:flutter_application_1/admin1/maps1.dart';
-
+import 'package:flutter_application_1/admin1/Tabla.dart';
+import 'package:flutter_application_1/admin1/Tabla2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -67,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
     const drawerSelections = [
       DailyPage(),
       TransectionPage(),
-      CounterPage(),
-      CounterPage(),
+      Tabla1(),
+      Tabla2(),
       CounterPage(),
       CounterPage(),
       MyApp(),

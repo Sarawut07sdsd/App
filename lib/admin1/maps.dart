@@ -6,6 +6,12 @@ import 'package:icon_badge/icon_badge.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:flutter_application_1/menu.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 const Color primary = Color(0xfff2f9fe);
 const Color secondary = Color(0xFFdbe4f3);
@@ -27,11 +33,15 @@ class DailyPage extends StatefulWidget {
 }
 
 class _DailyPageState extends State<DailyPage> {
+    
+
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String datetime2 = "";
   String datetime0 = "";
   String datetime3 = "";
+var latitude ="";
+var longitude = "";
   @override
   void setState(VoidCallback fn) {
     if (!mounted) return;
@@ -44,12 +54,25 @@ class _DailyPageState extends State<DailyPage> {
       DateTime datetime = DateTime.now();
       print(datetime.toString());
       datetime2 = DateFormat.Hms().format(datetime);
-
+      _getPosition();
+      
       setState(() {});
       //mytimer.cancel() //to terminate this timer
     });
     super.initState();
+      
   }
+
+Future<void> _getPosition() async {
+    final  Position position = await getCurrentLocation();
+                print(position.latitude); // พิกัดละติจูด
+                print(position.longitude); // พิกัดลองติจูด
+    setState(() {
+     latitude = position.latitude.toString();
+     longitude = position.longitude.toString();
+    });
+  }
+
 
   ///////// Dialg ///////////////////////////////////////////////////
 
@@ -73,13 +96,34 @@ class _DailyPageState extends State<DailyPage> {
           actions: <Widget>[
             TextButton(
               child: const Text('ยืนยีน'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push<void>(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            const WebViewContainer('')));
+              onPressed: () async {
+                Position position = await getCurrentLocation();
+                print(position.latitude); // พิกัดละติจูด
+                print(position.longitude); // พิกัดลองติจูด
+                final prefs = await SharedPreferences.getInstance();
+                final user = prefs.getString('user');
+                final url = Uri.parse(
+                        'http://localhost/1Projest/leave_system/leave_system/apiApp/gps.php?latitude=' +
+                            latitude.toString() +
+                            '&longitude=' +
+                            longitude.toString() +
+                            '&user=' +
+                            user.toString() +
+                            '&str=in'
+                            );
+                    final response = await http.get(url);
+                    var jsonResponse = convert.jsonDecode(response.body)
+                        as Map<String, dynamic>;
+                    print(jsonResponse);
+                    var success = jsonResponse['success'];
+
+
+                // Navigator.of(context).pop();
+                // Navigator.push<void>(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context) =>
+                //             const WebViewContainer('')));
               },
             ),
             TextButton(
@@ -114,12 +158,32 @@ class _DailyPageState extends State<DailyPage> {
           actions: <Widget>[
             TextButton(
               child: const Text('ยืนยีน'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push<void>(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const WorkOut('')));
+              onPressed: () async {
+                Position position = await getCurrentLocation();
+                print(position.latitude); // พิกัดละติจูด
+                print(position.longitude); // พิกัดลองติจูด
+                final prefs = await SharedPreferences.getInstance();
+                final user = prefs.getString('user');
+                final url = Uri.parse(
+                        'http://localhost/1Projest/leave_system/leave_system/apiApp/gps.php?latitude=' +
+                            latitude.toString() +
+                            '&longitude=' +
+                            longitude.toString() +
+                            '&user=' +
+                            user.toString()  +
+                            '&str=out');
+                    final response = await http.get(url);
+                    var jsonResponse = convert.jsonDecode(response.body)
+                        as Map<String, dynamic>;
+                    print(jsonResponse);
+                    var success = jsonResponse['success'];
+
+
+                // Navigator.of(context).pop();
+                // Navigator.push<void>(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context) => const WorkOut('')));
               },
             ),
             TextButton(
@@ -133,7 +197,37 @@ class _DailyPageState extends State<DailyPage> {
       },
     );
   }
+
+  // ตัวอย่างการใช้งาน Geolocator เพื่อดึงข้อมูลพิกัด
+  Future<Position> getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // ตรวจสอบสิทธิ์การเข้าถึงตำแหน่งปัจจุบันของอุปกรณ์
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw 'Location services are disabled.';
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw 'Location permissions are denied';
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw 'Location permissions are permanently denied, we cannot request permissions.';
+    }
+
+    // ดึงข้อมูลพิกัดปัจจุบันของอุปกรณ์
+    return await Geolocator.getCurrentPosition();
+  }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -182,27 +276,31 @@ class _DailyPageState extends State<DailyPage> {
                         child: Column(
                           children: [
                             Text(
-                              "รอใส่ Map",
+                              "ตำแหน่งล่าสุดของคุณ",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: mainFontColor),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             Text(
-                              "ตำแหน่งปัจุบันของคุณ",
+                              "ละติจุ : $latitude ลองติจุ : $longitude ",
                               style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                   color: black),
                             ),
+                           
+
                           ],
                         ),
                       )
                     ],
                   ),
+
+                  
                   const SizedBox(
                     height: 50,
                   ),

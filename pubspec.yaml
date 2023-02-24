@@ -9,20 +9,24 @@ environment:
 dependencies:
   badges: ^3.0.2
   english_words: ^4.0.0
+  enhanced_drop_down: ^0.1.7+1
   firebase_core: ^2.4.1
   flutter:
     sdk: flutter
   flutter_adaptive_scaffold: ^0.1.0
+  flutter_table: ^1.1.0
   flutter_zoom_drawer: ^3.0.3
   font_awesome_flutter: ^10.3.0
+  geolocator: ^9.0.2
   google_maps_flutter: ^2.2.3
   http: ^0.13.5
   icon_badge: ^1.0.0
   intl: ^0.18.0
+  maps_launcher: ^2.2.0
   provider: ^6.0.5
   rflutter_alert: ^2.0.4
-  webview_flutter: ^4.0.2
-
+  shared_preferences: ^2.0.18
+  webview_flutter: ^4.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
