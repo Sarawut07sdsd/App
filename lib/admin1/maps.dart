@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+import 'package:flutter_application_1/admin1/DataError.dart';
 
 const Color primary = Color(0xfff2f9fe);
 const Color secondary = Color(0xFFdbe4f3);
@@ -33,15 +34,13 @@ class DailyPage extends StatefulWidget {
 }
 
 class _DailyPageState extends State<DailyPage> {
-    
-
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String datetime2 = "";
   String datetime0 = "";
   String datetime3 = "";
-var latitude ="";
-var longitude = "";
+  var latitude = "";
+  var longitude = "";
   @override
   void setState(VoidCallback fn) {
     if (!mounted) return;
@@ -55,24 +54,22 @@ var longitude = "";
       print(datetime.toString());
       datetime2 = DateFormat.Hms().format(datetime);
       _getPosition();
-      
+
       setState(() {});
       //mytimer.cancel() //to terminate this timer
     });
     super.initState();
-      
   }
 
-Future<void> _getPosition() async {
-    final  Position position = await getCurrentLocation();
-                print(position.latitude); // พิกัดละติจูด
-                print(position.longitude); // พิกัดลองติจูด
+  Future<void> _getPosition() async {
+    final Position position = await getCurrentLocation();
+    print(position.latitude); // พิกัดละติจูด
+    print(position.longitude); // พิกัดลองติจูด
     setState(() {
-     latitude = position.latitude.toString();
-     longitude = position.longitude.toString();
+      latitude = position.latitude.toString();
+      longitude = position.longitude.toString();
     });
   }
-
 
   ///////// Dialg ///////////////////////////////////////////////////
 
@@ -103,27 +100,41 @@ Future<void> _getPosition() async {
                 final prefs = await SharedPreferences.getInstance();
                 final user = prefs.getString('user');
                 final url = Uri.parse(
-                        'http://localhost/1Projest/leave_system/leave_system/apiApp/gps.php?latitude=' +
-                            latitude.toString() +
-                            '&longitude=' +
-                            longitude.toString() +
-                            '&user=' +
-                            user.toString() +
-                            '&str=in'
-                            );
-                    final response = await http.get(url);
-                    var jsonResponse = convert.jsonDecode(response.body)
-                        as Map<String, dynamic>;
-                    print(jsonResponse);
-                    var success = jsonResponse['success'];
-
-
-                // Navigator.of(context).pop();
-                // Navigator.push<void>(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context) =>
-                //             const WebViewContainer('')));
+                    'http://localhost/1Projest/leave_system/leave_system/apiApp/gps.php?latitude=' +
+                        latitude.toString() +
+                        '&longitude=' +
+                        longitude.toString() +
+                        '&user=' +
+                        user.toString() +
+                        '&str=in');
+                final response = await http.get(url);
+                var jsonResponse =
+                    convert.jsonDecode(response.body) as Map<String, dynamic>;
+                print(jsonResponse);
+                var success = jsonResponse['success'];
+                var value = jsonResponse['text'];
+                if (success == '1') {
+                  Navigator.of(context).pop();
+                  Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const WebViewContainer('')));
+                } else if(value == '1') {
+                  Navigator.of(context).pop();
+                  Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const ErrorOut('')));
+                }else if(value == '2') {
+                  Navigator.of(context).pop();
+                  Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const ErrorOut2('')));
+                }
               },
             ),
             TextButton(
@@ -137,6 +148,12 @@ Future<void> _getPosition() async {
       },
     );
   }
+
+
+
+
+
+
 
   Future<void> _showAlertWorkOut() async {
     return showDialog<void>(
@@ -165,25 +182,41 @@ Future<void> _getPosition() async {
                 final prefs = await SharedPreferences.getInstance();
                 final user = prefs.getString('user');
                 final url = Uri.parse(
-                        'http://localhost/1Projest/leave_system/leave_system/apiApp/gps.php?latitude=' +
-                            latitude.toString() +
-                            '&longitude=' +
-                            longitude.toString() +
-                            '&user=' +
-                            user.toString()  +
-                            '&str=out');
-                    final response = await http.get(url);
-                    var jsonResponse = convert.jsonDecode(response.body)
-                        as Map<String, dynamic>;
-                    print(jsonResponse);
-                    var success = jsonResponse['success'];
-
-
-                // Navigator.of(context).pop();
-                // Navigator.push<void>(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context) => const WorkOut('')));
+                    'http://localhost/1Projest/leave_system/leave_system/apiApp/gps.php?latitude=' +
+                        latitude.toString() +
+                        '&longitude=' +
+                        longitude.toString() +
+                        '&user=' +
+                        user.toString() +
+                        '&str=out');
+                final response = await http.get(url);
+                var jsonResponse =
+                    convert.jsonDecode(response.body) as Map<String, dynamic>;
+                print(jsonResponse);
+                var success = jsonResponse['success'];
+                var value = jsonResponse['text'];
+                if (success == '1') {
+                  Navigator.of(context).pop();
+                  Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const WorkOut('')));
+                } else if(value == '3') {
+                  Navigator.of(context).pop();
+                  Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const ErrorOut3(''),
+                      ));
+                }else if(value == '4') {
+                  Navigator.of(context).pop();
+                  Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const ErrorOut4(''),
+                      ));
+                }
               },
             ),
             TextButton(
@@ -226,8 +259,6 @@ Future<void> _getPosition() async {
   }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -292,15 +323,11 @@ Future<void> _getPosition() async {
                                   fontWeight: FontWeight.bold,
                                   color: black),
                             ),
-                           
-
                           ],
                         ),
                       )
                     ],
                   ),
-
-                  
                   const SizedBox(
                     height: 50,
                   ),
@@ -787,3 +814,4 @@ class WorkOut extends StatelessWidget {
     );
   }
 }
+
