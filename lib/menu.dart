@@ -9,6 +9,7 @@ import 'package:flutter_application_1/admin1/maps.dart';
 import 'package:flutter_application_1/admin1/maps1.dart';
 import 'package:flutter_application_1/admin1/Tabla.dart';
 import 'package:flutter_application_1/admin1/Tabla2.dart';
+import 'package:flutter_application_1/admin1/addLa.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -73,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       CounterPage(),
       CounterPage(),
       MyApp(),
+      TransectionPage2(),
     ];
 
     final manager = Provider.of<DrawerManagerProvider>(context, listen: false);

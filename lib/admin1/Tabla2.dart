@@ -79,7 +79,7 @@ class Tabla2 extends StatelessWidget {
             appBar: AppBar(
               bottom: TabBar(
                 tabs: [
-                  Tab(text: 'สิทธิ์การลางานคงเหลือ'),
+                  // Tab(text: 'สิทธิ์การลางานคงเหลือ'),
                   Tab(text: 'อนุมัติแล้ว'),
                   Tab(text: 'ไม่อนุมัติ'),
                   Tab(text: 'รออนุมัติ'),
@@ -89,45 +89,45 @@ class Tabla2 extends StatelessWidget {
             ),
             body: TabBarView(
               children: [
-                Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: FutureBuilder<List<dynamic>>(
-                    future: MyAPI.fetchData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final data = snapshot.data!;
-                        return DataTable(
-                          columns: [
-                            DataColumn(label: Text('ลำดับ')),
-                            DataColumn(label: Text('ประเภทการลา')),
-                            DataColumn(label: Text('จำนวนที่ลาได้')),
-                            DataColumn(label: Text('ลาไปแล้ว (วัน)')),
-                            DataColumn(label: Text('คงเหลือ (วัน)')),
-                          ],
-                          rows: data
-                              .map((user) => DataRow(cells: [
-                                    DataCell(Text(user['num'].toString())),
-                                    DataCell(Text(user['Type_name'])),
-                                    DataCell(
-                                        Text(user['leave_maximum'].toString())),
-                                    DataCell(
-                                        Text(user['datesomSum'].toString())),
-                                    DataCell(Text(user['sum'].toString())),
-                                  ]))
-                              .toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Failed to load data'),
-                        );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    },
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.all(16.0),
+                //   child: FutureBuilder<List<dynamic>>(
+                //     future: MyAPI.fetchData(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.hasData) {
+                //         final data = snapshot.data!;
+                //         return DataTable(
+                //           columns: [
+                //             DataColumn(label: Text('ลำดับ')),
+                //             DataColumn(label: Text('ประเภทการลา')),
+                //             DataColumn(label: Text('จำนวนที่ลาได้')),
+                //             DataColumn(label: Text('ลาไปแล้ว (วัน)')),
+                //             DataColumn(label: Text('คงเหลือ (วัน)')),
+                //           ],
+                //           rows: data
+                //               .map((user) => DataRow(cells: [
+                //                     DataCell(Text(user['num'].toString())),
+                //                     DataCell(Text(user['Type_name'])),
+                //                     DataCell(
+                //                         Text(user['leave_maximum'].toString())),
+                //                     DataCell(
+                //                         Text(user['datesomSum'].toString())),
+                //                     DataCell(Text(user['sum'].toString())),
+                //                   ]))
+                //               .toList(),
+                //         );
+                //       } else if (snapshot.hasError) {
+                //         return Center(
+                //           child: Text('Failed to load data'),
+                //         );
+                //       } else {
+                //         return Center(
+                //           child: CircularProgressIndicator(),
+                //         );
+                //       }
+                //     },
+                //   ),
+                // ),
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: FutureBuilder<List<dynamic>>(

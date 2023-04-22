@@ -25,7 +25,8 @@ class Tabla1 extends StatelessWidget {
     return MaterialApp(
       title: 'My App',
       home: Scaffold(
-        body: Container(
+        body: 
+          Container(
           padding: EdgeInsets.all(16.0),
           child: FutureBuilder<List<dynamic>>(
             future: MyAPI.fetchData(),
@@ -106,6 +107,8 @@ class Tabla1 extends StatelessWidget {
             },
           ),
         ),
+
+        
 
 
 
