@@ -22,6 +22,7 @@ class MyApp2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return ChangeNotifierProvider<DrawerManagerProvider>(
         create: (_) => DrawerManagerProvider(),
         child: MaterialApp(

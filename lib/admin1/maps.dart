@@ -53,6 +53,7 @@ class _DailyPageState extends State<DailyPage> {
       DateTime datetime = DateTime.now();
       print(datetime.toString());
       datetime2 = DateFormat.Hms().format(datetime);
+      datetime2 = datetime.toString();
       _getPosition();
 
       setState(() {});

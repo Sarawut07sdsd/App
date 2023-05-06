@@ -4,8 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 void sendPostRequest() async {
   final url = Uri.parse('https://jsonplaceholder.typicode.com/albums/1');
   final response = await http.get(url);
@@ -138,15 +136,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   child: const Text('เข้าสู่ระบบ'),
                   onPressed: () async {
                     final url = Uri.parse(
-                        'http://localhost/1Projest/leave_system/leave_system/apiApp/loginApp.php?Emp_id='+nameController.text+'&Emp_pass='+passwordController.text);
+                        'http://localhost/1Projest/leave_system/leave_system/apiApp/loginApp.php?Emp_id=' +
+                            nameController.text +
+                            '&Emp_pass=' +
+                            passwordController.text);
                     final response = await http.get(url);
                     var jsonResponse = convert.jsonDecode(response.body)
                         as Map<String, dynamic>;
-                        print(jsonResponse);
+                    print(jsonResponse);
                     var success = jsonResponse['success'];
                     if (success == '1') {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setString('user', jsonResponse['user']);
+                      await prefs.setString('Emp_name', jsonResponse['Emp_name']);
+                      await prefs.setString('Dep_name', jsonResponse['Dep_name']);
+                      await prefs.setString('Pos_name', jsonResponse['Pos_name']);
+
+
                       showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(

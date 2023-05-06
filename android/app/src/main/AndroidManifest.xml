@@ -2,11 +2,8 @@
     package="com.example.flutter_application_1">
    <application
         android:name=".Application"
-        android:name="io.flutter.app.FlutterApplication"
         android:value="YOUR KEY HERE"
-        
         android:label="flutter_application_1"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
